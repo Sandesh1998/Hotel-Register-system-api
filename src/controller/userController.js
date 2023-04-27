@@ -5,6 +5,7 @@ class UserController {
   register = async (req, res) => {
     try {
       const userExists = await User.findOne({ email: req.body.email });
+
       if (userExists) {
         return res
           .status(200)
@@ -14,6 +15,7 @@ class UserController {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       req.body.password = hashedPassword;
+      console.log("here",req.body)
       const newuser = new User(req.body);
       await newuser.save();
       res
