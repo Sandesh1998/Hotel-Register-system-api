@@ -15,7 +15,7 @@ class UserController {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       req.body.password = hashedPassword;
-      console.log("here",req.body)
+      console.log("here", req.body);
       const newuser = new User(req.body);
       await newuser.save();
       res
@@ -54,6 +54,18 @@ class UserController {
       res
         .status(500)
         .send({ message: "Error logging in", success: false, error });
+    }
+  };
+
+  // get all users
+  getAllUsers = async (req, res) => {
+    try {
+      const users = await User.find({});
+      res.status(200).send({ message: "Users fetched", success: true, users });
+    } catch (error) {
+      res
+        .status(500)
+        .send({ message: "Error fetching users", success: false, error });
     }
   };
 }
