@@ -8,8 +8,7 @@ app.use(express.json());
 app.use("/api/user", userRoute);
 app.use("/api/hotel", hotelRoute);
 const port = process.env.Port || 5000;
-if(process.env.NODE.ENV !== 'test') 
-app.listen(port, () => console.log(`Node server started at port ${port}`));
+if (process.env.NODE.ENV !== "test")
+  app.listen(port, () => console.log(`Node server started at port ${port}`));
 
-
-module.exports = {app};
+module.exports = { app };
