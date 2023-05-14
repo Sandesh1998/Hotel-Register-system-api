@@ -2,9 +2,8 @@ name: hotels-api
 run-name: ${{github.actor}} is running Github Actions...
 on: [pull_request, push]
 env:
-  MongoTestUri: ${{secrets.MONGO_TEST_URI}}
-  JWT_SECRET: ${{secrets.JWT_SECRET}}
-
+MONGO_URL: "mongodb+srv://Sandesh:Sandesh@cluster0.i7tzfje.mongodb.net/hotelRegister"
+JWT_SECRET: "HOTELREGISTRYSYSTEM"
 jobs:
   run-jest:
     runs-on: ubuntu-latest

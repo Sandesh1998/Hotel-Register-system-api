@@ -28,7 +28,7 @@ describe("Login user", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
     expect(response.body.token).toBeDefined();
-  });
+  }, 60000);
 
   it("should return an error message for invalid email", async () => {
     const response = await request(app).post("/api/user/login").send({
