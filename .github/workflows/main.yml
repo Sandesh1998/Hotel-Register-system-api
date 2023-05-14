@@ -1,0 +1,16 @@
+name: hotels-api
+run-name: ${{github.actor}} is running Github Actions...
+on: [pull_request, push]
+env:
+  MongoTestUri: ${{secrets.MONGO_TEST_URI}}
+  JWT_SECRET: ${{secrets.JWT_SECRET}}
+
+jobs:
+  run-jest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install
+      - run: echo ${{env.MONGO_TEST_URI}}
+      - run: npm test user.test.js
