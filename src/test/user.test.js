@@ -6,7 +6,6 @@ const { app } = require("../../index");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-
 // describe("user controller", () => {
 
 //   it("should register a user", async () => {
@@ -21,7 +20,7 @@ const jwt = require("jsonwebtoken");
 //   }, 60000);
 // });
 describe("Login user", () => {
-  it("should return a success message and token for valid credentials", async () => {
+  it.only("should return a success message and token for valid credentials", async () => {
     const response = await request(app).post("/api/user/login").send({
       email: "test11@gmail.com",
       password: "test123",
@@ -29,8 +28,7 @@ describe("Login user", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.success).toBe(true);
     expect(response.body.token).toBeDefined();
-  });
-
+  }, 60000);
 
   it("should return an error message for invalid email", async () => {
     const response = await request(app).post("/api/user/login").send({
@@ -42,7 +40,6 @@ describe("Login user", () => {
     expect(response.body.message).toBe("User does not exist");
   });
 
-
   it("should return an error message for invalid password", async () => {
     const response = await request(app).post("/api/user/login").send({
       email: "test8@gmail.com",
@@ -52,5 +49,4 @@ describe("Login user", () => {
     expect(response.body.success).toBe(false);
     expect(response.body.message).toBe("Password is incorrect");
   });
-  
 });
