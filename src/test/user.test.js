@@ -1,52 +1,39 @@
-const request = require("supertest");
-
-const { app } = require("../../index");
-// const jwt = require("jsonwebtoken");
-// const user = require("../models/userModel");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
-// describe("user controller", () => {
-
-//   it("should register a user", async () => {
-//     const response = await request(app).post("/api/user/register").send({
-//       name: "test",
-//       email: "test17@gmail.com",
-//       password: "test123",
-//     });
-//     expect(response.statusCode).toBe(200);
-//     expect(response.body.success).toBe(true);
-//     expect(response.body.message).toBe("User created successfully");
-//   }, 60000);
-// });
-describe("Login user", () => {
-  it.only("should return a success message and token for valid credentials", async () => {
-    const response = await request(app).post("/api/user/login").send({
-      email: "test11@gmail.com",
-      password: "test123",
-    });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.success).toBe(true);
-    expect(response.body.token).toBeDefined();
-  }, 60000);
-
-  it("should return an error message for invalid email", async () => {
-    const response = await request(app).post("/api/user/login").send({
-      email: "invalid@gmail.com",
-      password: "test123",
-    });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.success).toBe(false);
-    expect(response.body.message).toBe("User does not exist");
-  });
-
-  it("should return an error message for invalid password", async () => {
-    const response = await request(app).post("/api/user/login").send({
-      email: "test8@gmail.com",
-      password: "test1234",
-    });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.success).toBe(false);
-    expect(response.body.message).toBe("Password is incorrect");
+const assert = require("assert");
+const bcrypt = require("bcrypt");
+const userModel = require("../models/user");
+const { register } = require("../controller/hotelController");
+describe("User Registration", function () {
+  it("should be register a user", async function () {
+    const req = {
+      body: {
+        email: "tester@gmail.com",
+        password: "tester",
+      },
+    };
+    // create fake response object with a status function that returns itself
+    const res = {
+      status: function (statusCode) {
+        assert.strictEqual(statusCode, 200);
+        return this;
+      },
+      send: function (data) {
+        assert.strictEqual(data.message, "User created successfully");
+        assert.strictEqual(data.success, true);
+        return this;
+      },
+    };
+    try {
+      await register(req, res);
+      const user = await userModel.findOne({ email: email });
+      assert.ok(user);
+      // check if password is hashed
+      const isPasswordValid = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+      assert.strictEqual(isPasswordValid, true);
+    } catch (error) {
+      throw new Error("Test failed");
+    }
   });
 });
