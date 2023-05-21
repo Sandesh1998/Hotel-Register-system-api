@@ -21,6 +21,7 @@ class UserController {
       res
         .status(200)
         .send({ message: "User created successfully", success: true });
+      console.log(res.message);
     } catch (error) {
       res
         .status(500)
